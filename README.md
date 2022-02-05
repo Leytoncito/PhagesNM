@@ -22,3 +22,6 @@ An analysis with [CD-HIT](https://github.com/weizhongli/cdhit/) was carried out 
 ```
 cd-hit-est -i 157.fasta -c 0.75 -n 4 -M 13000 -T 0 -o 157clustered075.fasta
 ```
+### Phylogenetic classification of representative sequences
+
+### Presence-absence matrix generation by LS-BSR
