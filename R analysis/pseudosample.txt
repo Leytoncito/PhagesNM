@@ -1,0 +1,158 @@
+samples	Collection Year	genogroup	Clonal-complex	Country	pathogenesis
+X26029_8733.fas	1980	B	ST-32	Chile	not determined
+X26034_27_86.fas	1986	B	ST-32	Braz	not determined
+X26035_270_94.fas	1994	B	ST-32	Arg	not determined
+X26037_71_87.fas	1987	B	ST-32	Braz	not determined
+X26038_84_89.fas	1989	B	ST-32	Braz	not determined
+X31148_M14_240411.fas	2008	W	ST-11	Arg	invasive
+X31149_M14_240412.fas	2010	W	ST-11	Arg	invasive
+X31150_M14_240413.fas	2011	W	ST-11	Arg	invasive
+X31151_M14_240414.fas	2011	W	ST-11	Arg	invasive
+X31152_M14_240415.fas	2012	W	ST-11	Arg	invasive
+X31155_M14_240416.fas	2011	W	ST-11	Braz	invasive
+X31156_M14_240417.fas	2011	W	ST-11	Braz	invasive
+X31157_M14_240418.fas	2011	W	ST-11	Braz	invasive
+X31158_M14_240419.fas	2010	W	ST-11	Braz	invasive
+X31159_M14_240420.fas	2008	W	ST-11	Braz	invasive
+X31160_M14_240421.fas	2009	W	not determined	Braz	invasive
+X31161_M14_240422.fas	2008	W	ST-11	Braz	invasive
+X31317_NM3686.fas		W	ST-11	Braz	invasive
+X31319_M10208.fas		W	ST-11	Chile	invasive
+X31320_NM3687.fas		W	ST-11	Braz	invasive
+X31322_M20599.fas		W	ST-11	Chile	invasive
+X31323_M1412.fas		W	ST-11	Chile	invasive
+X34547_4119.fas	1989	B	ST-32	Braz	invasive
+X34548_9506.fas	2004	C	ST-32	Braz	invasive
+X34549_9757.fas	1988	B	ST-32	Braz	invasive
+X34550_12888.fas	2004	C	ST-32	Braz	invasive
+X34570_73696.fas	1973	C	not determined	Braz	invasive
+X34571_73704.fas	1973	C	ST-11	Braz	invasive
+X34572_75643.fas	1975	A	ST-5	Braz	invasive
+X34573_75689.fas	1975	A	ST-5	Braz	invasive
+X38176_M37087.fas	2014	Z	L2	Braz	carrier
+X38177_M37113.fas	2014	cnl	ST-1136	Braz	carrier
+X38178_M37959.fas	2014	cnl	ST-1136	Braz	carrier
+X38179_M37128.fas	2014	Y	ST-23	Braz	carrier
+X38180_M37958.fas	2014	cnl	ST-198	Braz	carrier
+X39836_M03473.fas.ref	1995	C	ST-11	Arg	not determined
+X39837_M05730.fas	1976	C	ST-11	Braz	not determined
+X39838_M13970.fas	2005	C	ST-8	Braz	not determined
+X39839_M13973.fas	2005	C	ST-103	Braz	not determined
+X39840_M14431.fas	2005	C	ST-103	Braz	not determined
+X441_8680.fas	1987	B	ST-32	Chile	invasive
+X468_BRAZ10.fas	1976	C	ST-11	Braz	not determined
+X54017_M37059.fas	2014	E	ST-254	Braz	not determined
+X54018_M37060.fas	2014	cnl	ST-1136	Braz	not determined
+X54019_M37064.fas	2014	B	ST-32	Braz	not determined
+X54020_M37065.fas	2014	cnl	ST-1136	Braz	not determined
+X54021_M37067.fas	2014	cnl	ST-198	Braz	not determined
+X54022_M37068.fas	2014	E	ST-178	Braz	not determined
+X54023_M37069.fas	2014	B	ST-41/44	Braz	not determined
+X54024_M37074.fas	2014	cnl	not determined	Braz	not determined
+X54025_M37082.fas	2014	cnl	ST-1136	Braz	not determined
+X54026_M37087.fas	2014	Z	L2	Braz	not determined
+X54027_M37089.fas	2014	NG	not determined	Braz	not determined
+X54028_M37093.fas	2014	cnl	ST-1136	Braz	not determined
+X54029_M37095.fas	2014	cnl	ST-1136	Braz	not determined
+X54030_M37098.fas	2014	E	ST-254	Braz	not determined
+X54031_M37099.fas	2014	Y	ST-23	Braz	not determined
+X54032_M37102.fas	2014	cnl	ST-198	Braz	not determined
+X54033_M37103.fas	2014	Y	not determined	Braz	not determined
+X54034_M37104.fas	2014	W	ST-11	Braz	not determined
+X54035_M37108.fas	2014	cnl	ST-53	Braz	not determined
+X54036_M37111.fas	2014	Z	L2	Braz	not determined
+X54037_M37112.fas	2014	NG	ST-32	Braz	not determined
+X54038_M37113.fas	2014	cnl	ST-1136	Braz	not determined
+X54039_M37114.fas	2014	cnl	ST-198	Braz	not determined
+X54040_M37115.fas	2014	B	ST-41/44	Braz	not determined
+X54041_M37116.fas	2014	cnl	ST-1136	Braz	not determined
+X54042_M37118.fas	2014	cnl	ST-1136	Braz	not determined
+X54043_M37121.fas	2014	B	ST-4821	Braz	not determined
+X54044_M37122.fas	2014	NG	not determined	Braz	not determined
+X54045_M37125.fas	2014	cnl	ST-1136	Braz	not determined
+X54046_M37126.fas	2014	cnl	L1	Braz	not determined
+X54047_M37127.fas	2014	E	ST-254	Braz	not determined
+X54048_M37128.fas	2014	Y	ST-23	Braz	not determined
+X54049_M37133.fas	2014	cnl	ST-1136	Braz	not determined
+X54050_M37134.fas	2014	E	ST-254	Braz	not determined
+X54051_M37135.fas	2014	cnl	ST-198	Braz	not determined
+X54052_M37139.fas	2014	cnl	ST-1136	Braz	not determined
+X54053_M37141.fas	2014	W	ST-11	Braz	not determined
+X54054_M37144.fas	2014	B	ST-213	Braz	not determined
+X54055_M37148.fas	2014	cnl	ST-53	Braz	not determined
+X54056_M37150.fas	2014	cnl	ST-198	Braz	not determined
+X54057_M37151.fas	2014	cnl	ST-53	Braz	not determined
+X54058_M37152.fas	2014	not determined	ST-175	Braz	not determined
+X54059_M37153.fas	2014	Z	L2	Braz	not determined
+X54060_M37154.fas	2014	cnl	ST-53	Braz	not determined
+X54061_M37958.fas	2014	cnl	ST-198	Braz	not determined
+X54062_M37959.fas	2014	cnl	ST-1136	Braz	not determined
+X54063_M37960.fas	2014	cnl	ST-53	Braz	not determined
+X56749_MCRJ_001.fas	2016	B	ST-41/44	Braz	carrier
+X56750_MCRJ_074.fas	2016	C	ST-11	Braz	carrier
+X56751_MCRJ_107.fas	2016	B	carrier	Braz	carrier
+X56752_MCRJ_108.fas	2016	C	carrier	Braz	carrier
+X61385_M_011_16.fas	2016	B	ST-41/44	Chile	invasive
+X61386_M_015_16.fas	2016	B	ST-103	Chile	invasive
+X61387_M_023_16.fas	2016	B	ST-41/44	Chile	invasive
+X61388_M_046_16.fas	2016	B	ST-41/44	Chile	invasive
+X61389_M_047_16.fas	2016	B	ST-41/44	Chile	invasive
+X61556_M_009_16.fas	2016	invasive	ST-11	Chile	invasive
+X61557_M_014_16.fas	2016	W	ST-11	Chile	invasive
+X61558_M_016_16.fas	2016	W	ST-11	Chile	invasive
+X61559_M_018_16.fas	2016	W	ST-11	Chile	invasive
+X61560_M_026_16.fas	2016	invasive	ST-103	Chile	invasive
+X61561_M_064_16.fas	2016	W	ST-11	Chile	invasive
+X61562_M_067_16.fas	2016	Y	ST-11	Chile	invasive
+X61563_M_079_16.fas	2016	W	ST-11	Chile	invasive
+X61564_M_092_16.fas	2016	W	ST-11	Chile	invasive
+X61565_M_103_16.fas	2016	B	ST-11	Chile	invasive
+X64032_M42473.fas	2016	E	carrier	Braz	carrier
+X650_M40_94.fas	1994	B	ST-41/44	Chile	invasive
+X84_IAL2229.fas	1976	A	ST-5	Braz	not determined
+X93479_M42412.fas	2016	cnl	ST-1136	Braz	carrier
+X93480_M42413.fas	2016	B	ST-41/44	Braz	carrier
+X93481_M42414.fas	2016	cnl	L1	Braz	carrier
+X93482_M42415.fas	2016	cnl	ST-198	Braz	carrier
+X93483_M42416.fas	2016	cnl	L1	Braz	carrier
+X93484_M42418.fas	2016	Z	L2	Braz	carrier
+X93485_M42419.fas	2016	cnl	ST-1136	Braz	carrier
+X93486_M42420.fas	2016	cnl	ST-1136	Braz	carrier
+X93487_M42421.fas	2016	cnl	ST-198	Braz	carrier
+X93488_M42424.fas	2016	Z	L2	Braz	carrier
+X93489_M42425.fas	2016	cnl	L1	Braz	carrier
+X93490_M42426.fas	2016	B	ST-41/44	Braz	carrier
+X93491_M42427.fas	2016	cnl	ST-1136	Braz	carrier
+X93492_M42428.fas	2016	cnl	L1	Braz	carrier
+X93493_M42429.fas	2016	B	ST-269	Braz	carrier
+X93494_M42431.fas	2016	cnl	L1	Braz	carrier
+X93495_M42435.fas	2016	cnl	ST-198	Braz	carrier
+X93496_M42441.fas	2016	Z	L2	Braz	carrier
+X93497_M42442.fas	2016	W	carrier	Braz	carrier
+X93498_M42444.fas	2016	cnl	ST-1136	Braz	carrier
+X93499_M42445.fas	2016	B	ST-750/L2	Braz	carrier
+X93500_M42446.fas	2016	cnl	L1	Braz	carrier
+X93501_M42448.fas	2016	cnl	ST-1136	Braz	carrier
+X93502_M42450.fas	2016	cnl	ST-198	Braz	carrier
+X93503_M42451.fas	2016	cnl	L1	Braz	carrier
+X93504_M42454.fas	2016	cnl	L1	Braz	carrier
+X93505_M42456.fas	2016	cnl	ST-198	Braz	carrier
+X93506_M42458.fas	2016	B	ST-4821	Braz	carrier
+X93507_M42459.fas	2016	cnl	ST-198	Braz	carrier
+X93508_M42481.fas	2016	cnl	ST-1136	Braz	carrier
+X93509_M42460.fas	2016	E	ST-254	Braz	carrier
+X93510_M42461.fas	2016	B	ST-865	Braz	carrier
+X93511_M42467.fas	2016	cnl	ST-198	Braz	carrier
+X93512_M42468.fas	2016	cnl	ST-198	Braz	carrier
+X93513_M42470.fas	2016	B	ST-41/44	Braz	carrier
+X93514_M42471.fas	2016	B	ST-1572	Braz	carrier
+X93515_M42475.fas	2016	cnl	ST-1136	Braz	carrier
+X93516_M42476.fas	2016	B	ST-41/44	Braz	carrier
+X93517_M42477.fas	2016	E	ST-1157	Braz	carrier
+X93518_M42478.fas	2016	cnl	ST-198	Braz	carrier
+X93519_M42479.fas	2016	cnl	ST-198	Braz	carrier
+X93520_M42480.fas	2016	B	ST-35	Braz	carrier
+X93521_M42483.fas	2016	cnl	ST-198	Braz	carrier
+X93522_M42484.fas	2016	cnl	ST-198	Braz	carrier
+X93523_M42485.fas	2016	cnl	ST-53	Braz	carrier
+X93524_M42469.fas	2016	cnl	L1	Braz	carrier

@@ -1,0 +1,113 @@
+---
+title: "Random-Forest Analysis"
+subtitle: "Supporting code for manuscript:Comprehensive genome analysis of Neisseria meningitidis from South America reveals a distinctive pathogenicity-related prophages repertoire"
+author: "Benjamin Leyton-Carcaman | BIOREN-UFRO | <leyton.bl@gmail.com>"
+date: "01-07-2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+#Analisis de Random Forest
+
+#### import libraries
+
+```{r message=FALSE, warning=FALSE}
+rpackages<-c("randomForest", "caret", "caTools", "pROC", "rfUtilities", "dplyr", "readxl")
+
+.inst <- rpackages %in% installed.packages()
+if(any(!.inst)) {
+  install.packages(packages[!.inst])
+}
+
+sapply(c(rpackages), require, character.only = TRUE)
+```
+
+### Clonal complex
+
+```{r echo=TRUE}
+
+#Complejo clonal
+
+com<-read_excel("Matrices.xlsx", sheet = 6)
+complejo_clonal<-com[,-c(1:3,5,6)]
+complejo_clonal<-na.omit(complejo_clonal)
+
+complejo_clonal$`Clonal-complex`<-as.factor(complejo_clonal$`Clonal-complex`)
+
+#divide subset
+set.seed(5) # predice todos los linajes
+split = sample.split(complejo_clonal$`Clonal-complex`, SplitRatio = 0.80)
+training_set = subset(complejo_clonal, split == TRUE)
+testing_set = subset(complejo_clonal, split == FALSE)
+
+#entrenar
+
+rf_model_st <- randomForest(`Clonal-complex` ~., data = training_set,
+                                ntree=1000, importance=T, confusion=T, err.rate=T)
+
+
+
+#testing
+
+pred_test_class <- predict(rf_model_st, testing_set, type="class", norm.votes=TRUE, predict.all=FALSE, proximity=FALSE, nodes=FALSE)
+head(pred_test_class)
+Cm<-confusionMatrix(pred_test_class, testing_set$`Clonal-complex`)
+
+gini_st<-as.data.frame(rf_model_st$importance)
+
+
+```
+
+
+### Invasividad 
+
+```{r echo=TRUE}
+
+invade<-read_excel("Matrices.xlsx", sheet = 6)
+invade<-com[,-c(1:5)]
+invade<-na.omit(invade)
+invade<-as.data.frame(invade)
+invade$pathogenesis<-as.factor(invade$pathogenesis)
+
+set.seed(6)
+split2 = sample.split(invade$pathogenesis, SplitRatio = 0.80)
+training_set2 = subset(invade, split == TRUE)
+testing_set2 = subset(invade, split == FALSE)
+
+rf_model_pathogenesis <- randomForest(pathogenesis ~., data = training_set2,
+                                ntree=1000, importance=T, confusion=T, err.rate=T, na.action=na.exclude)
+
+pred_test_class2 <- predict(rf_model_pathogenesis, testing_set2, type="class", norm.votes=TRUE, predict.all=FALSE, proximity=FALSE, nodes=FALSE)
+head(pred_test_class2)
+Cm2<-confusionMatrix(pred_test_class2, testing_set2$pathogenesis)
+
+gini_patho<-as.data.frame(rf_model_pathogenesis$importance)
+
+```
+
+### Comparison
+
+```{r}
+gini_st$rank<-NA
+order.scores<-order(gini_st$MeanDecreaseGini, decreasing = TRUE)
+gini_st$rank[order.scores]<-1:nrow(gini_st)
+gini_st2<-gini_st[,24:26]
+
+
+gini_patho$rank<-NA
+order.scores2<-order(gini_patho$MeanDecreaseGini, decreasing = TRUE)
+gini_patho$rank[order.scores2]<-1:nrow(gini_patho)
+gini_patho2<-gini_patho[,3:5]
+
+gini_st2[20:21,]
+gini_patho2[20:21,]
+
+varImpPlot(rf_model_pathogenesis)
+?varImpPlot(rf_model_st)
+```
+

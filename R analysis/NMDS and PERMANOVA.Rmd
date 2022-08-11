@@ -1,0 +1,254 @@
+---
+title: "NMDS and PERMANOVA"
+subtitle: "Supporting code for manuscript:Comprehensive genome analysis of Neisseria meningitidis from South America reveals a distinctive pathogenicity-related prophages repertoire"
+author: "Benjamin Leyton-Carcaman | BIOREN-UFRO | <leyton.bl@gmail.com>"
+date: "30-06-2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Non-parametric multidimensional scaling (NMDS) analysis.
+
+NMDS is a non-parametric version of PcoA. NMDS represents better than PcoA the variation between groups. More information [here](https://riffomonas.org/code_club/2022-02-14-nmds)
+
+#### import libraries
+
+```{r message=FALSE, warning=FALSE}
+packages<-c("tidyverse", "vegan", "readxl", "ggplot2", "writexl", "ggsci", "patchwork")
+
+.inst <- packages %in% installed.packages()
+if(any(!.inst)) {
+  install.packages(packages[!.inst])
+}
+
+sapply(c(packages), require, character.only = TRUE)
+```
+
+### import datasets
+
+#### Genogroup
+
+MDA is included for reference, however its effects are not significant in this study
+
+```{r warning=FALSE}
+
+datos<-read_excel("Matrices.xlsx", sheet = 6)
+
+datos_genogroup<-datos[,-c(1,2,4,5,6)]
+datos_genogroup<-na.omit(datos_genogroup)
+
+datos_genogroup %>%
+  group_by(genogroup) %>%
+  mutate(n=n()) %>%
+  filter(n>4) -> datos_genogroup
+
+datos_genogroup<-datos_genogroup[,-59]
+
+geno_dist<-vegdist(datos_genogroup[,-1], method='jaccard')
+set.seed(2021)
+
+#permanova
+geno_div<-adonis2(geno_dist~genogroup, data=datos_genogroup, permutations = 999, method="jaccard")
+set.seed(30)
+
+#ordinacion
+
+genoMDS<-metaMDS(datos_genogroup [,-1], k=2, trymax=1000, autotransform=TRUE)
+
+NMDS1_geno<- genoMDS$points[,1]
+NMDS2_geno<- genoMDS$points[,2]
+geno.plot<-cbind(datos_genogroup, NMDS1_geno=NMDS1_geno, NMDS2_geno=NMDS2_geno)
+
+#vectores
+
+fit_geno<-envfit(genoMDS, datos_genogroup)
+arrow_geno<-data.frame(fit_geno$vectors$arrows,R = fit_geno$vectors$r, P = fit_geno$vectors$pvals)
+
+
+arrow_geno$FG <- rownames(arrow_geno)
+arrow.p_geno<-filter(arrow_geno, P <= 0.05)
+arrow.p_geno<-filter(arrow_geno, R >= 0.3)
+
+pp_geno<-ggplot(data=geno.plot, aes(NMDS1_geno, NMDS2_geno))+
+  geom_point(data=geno.plot, aes(NMDS1_geno, NMDS2_geno, color=genogroup),position=position_jitter(.2), size=2)+
+  stat_ellipse(aes(fill=genogroup), alpha=.2,type='t', geom="polygon")+ 
+  stat_ellipse(aes(color=genogroup),type = "t", linetype = 1, alpha=1, size=1.0) +
+  theme_classic ()+
+  geom_segment(data=arrow.p_geno, aes(x=0, y=0, xend=NMDS1*R*3, yend=NMDS2*R*3), arrow=arrow(length=unit(0.2, "cm"))) +
+  geom_label(data = arrow.p_geno, aes(x=NMDS1*R*3, y=NMDS2*R*3, label=FG), position = "identity")
+
+pp_geno
+geno_div
+
+```
+
+#### Clonal-Complex
+
+MDA is included for reference, however its effects are not significant in this study
+
+```{r warning=FALSE}
+
+com<-read_excel("Matrices.xlsx", sheet = 6)
+complejo_clonal<-com[,-c(1:3,5,6)]
+complejo_clonal<-na.omit(complejo_clonal)
+
+complejo_clonal %>%
+  group_by(`Clonal-complex`) %>%
+  mutate(n=n()) %>%
+  filter(n>4) -> complejo2
+
+complejo_st<-as.data.frame(complejo2[,-59])
+
+
+st_dist<-vegdist(complejo_st[-1], method = "jaccard")
+
+#PERMANOVA
+
+st_div<-adonis2(st_dist~`Clonal-complex`, complejo_st, permutations = 999, method = "jaccard")
+set.seed(2022)
+
+st_nmds<-metaMDS(complejo_st[-1], k=2, trymax=1000, autotransform=TRUE)
+
+NMDS1_st<-st_nmds$points[,1]
+NMDS2_st<-st_nmds$points[,2]
+
+st.plot<-cbind(complejo_st,NMDS1=NMDS1_st, NMDS2=NMDS2_st)
+
+#vectores
+
+
+fit_st<-envfit(st_nmds, complejo_st)
+arrow_st<-data.frame(fit_st$vectors$arrows,R = fit_st$vectors$r, P = fit_st$vectors$pvals)
+arrow.p_st<-filter(arrow_st, P <= 0.05)
+arrow.p_st<-filter(arrow_st, R >= 0.4)
+
+
+
+arrow_st$FG <- rownames(arrow_st)
+
+arrow.mda<-arrow_st[12,]
+arrow.p_st<-bind_rows(arrow.mda, arrow.p_st)
+
+#grafico
+
+colores_st<-c("#38761d","#e3359b","#ea9999", "#f1c232","#45818e", "#274e13", "#b4a7d6", "#f6b26b", "#a2c4c9")
+pp_st<-ggplot(data=st.plot, aes(NMDS1, NMDS2))+
+  geom_point(data=st.plot, aes(NMDS1, NMDS2, color=`Clonal-complex`),position=position_jitter(.2), size=2)+
+  stat_ellipse(aes(fill=`Clonal-complex`), alpha=.2,type='t',size =3, geom="polygon")+
+  stat_ellipse(aes(color=`Clonal-complex`),type = "t", linetype = 1, alpha=1, size=1.0) +
+  theme_classic()+ geom_segment(data=arrow.p_st, aes(x=0, y=0, xend=NMDS1*R*3, yend=NMDS2*R*3), arrow=arrow(length=unit(0.2, "cm"))) + 
+  geom_label(data = arrow.p_st, aes(x=NMDS1*R*3, y=NMDS2*R*3, label=FG, size=10), position = "identity") +
+  scale_color_manual(values = colores_st) + scale_fill_manual(values=colores_st) + theme(legend.position = "right", legend.title = element_blank(), legend.text = element_text(size = 15),legend.key = element_rect(fill = "white", colour = "black"))
+
+
+pp_st
+st_div
+arrow.p_st
+
+```
+
+#### Country
+
+MDA is included for reference, however its effects are not significant in this study
+
+```{r}
+
+datos_country<-datos[,-c(1:4,6)]
+datos_country<-na.omit(datos_country)
+
+
+country_dist<-vegdist(datos_country[,-1], method='jaccard')
+set.seed(2021)
+
+#permanova
+country_div<-adonis2(country_dist~Country, data=datos_country, permutations = 999, method="jaccard")
+set.seed(30)
+
+#ordinacion
+
+countryMDS<-metaMDS(datos_country [,-1], k=2, trymax=1000, autotransform=TRUE)
+
+NMDS1_country<- countryMDS$points[,1]
+NMDS2_country<- countryMDS$points[,2]
+country.plot<-cbind(datos_country, NMDS1_country, NMDS2_country)
+
+#vectores
+
+fit_country<-envfit(countryMDS, datos_country)
+arrow_country<-data.frame(fit_country$vectors$arrows,R = fit_country$vectors$r, P = fit_country$vectors$pvals)
+
+
+arrow_country$FG <- rownames(arrow_country)
+arrow.p_country<-filter(arrow_country, P <= 0.05)
+arrow.p_country<-filter(arrow_country, R >= 0.3)
+
+#grafico
+
+pp_country<-ggplot(data=country.plot, aes(NMDS1_country, NMDS2_country))+
+  geom_point(data=country.plot, aes(NMDS1_country, NMDS2_country, color=Country),position=position_jitter(.2), size=2)+
+  stat_ellipse(aes(fill=Country), alpha=.2,type='t',size =3, geom="polygon")+ 
+  stat_ellipse(aes(color=Country),type = "t", linetype = 1, alpha=1, size=1.0) +
+  theme_classic()+
+  geom_segment(data=arrow.p_country, aes(x=0, y=0, xend=NMDS1*R*3, yend=NMDS2*R*3), arrow=arrow(length=unit(0.2, "cm"))) +
+  geom_label(data = arrow.p_country, aes(x=NMDS1*R*3, y=NMDS2*R*3, label=FG), position = "identity")
+
+pp_country
+country_div
+arrow.p_country
+
+
+```
+
+#### pathogenesis
+
+MDA is included for reference, however its effects are not significant in this study
+
+```{r message=FALSE, warning=FALSE}
+
+matrix <- read_excel("./Matrices.xlsx", sheet = "matrix04")
+df<-matrix[,c(2,3:58)]
+
+disease <- matrix[,1:2]
+nm.matrix<-as.matrix(df[-1])
+disease$pathogenesis<-as.factor(disease$pathogenesis)
+
+nm.dist<-vegdist(nm.matrix, method='jaccard')
+set.seed(2021)
+nm.div<-adonis2(nm.dist~pathogenesis, data=matrix, permutations = 999, method="jaccard")
+nm.div
+
+nmMDS<-metaMDS(nm.matrix, distance="jaccard", k=2, trymax=1000, autotransform=TRUE)
+nmMDS
+
+NMDS1<- nmMDS$points[,1]
+NMDS2<- nmMDS$points[,2]
+nm.plot<-cbind(nm.matrix, NMDS1, NMDS2, disease)
+
+fit<-envfit(nmMDS, nm.matrix)
+arrow<-data.frame(fit$vectors$arrows,R = fit$vectors$r, P = fit$vectors$pvals)
+
+
+arrow$FG <- rownames(arrow)
+arrow.p<-filter(arrow, P <= 0.05)
+arrow.R<-filter(arrow, R >= 0.4)
+mda<-rbind(arrow.R, arrow.p[9,])
+
+#grafico
+
+pqq<-ggplot(data=nm.plot, aes(NMDS1, NMDS2))+
+  geom_point(data=nm.plot, aes(NMDS1, NMDS2, color=pathogenesis, shape=pathogenesis),position=position_jitter(.2), size=2)+
+  stat_ellipse(aes(fill=pathogenesis), alpha=.2,type='t',size =1, geom="polygon")+ 
+  stat_ellipse(aes(color=pathogenesis),type = "t", linetype = 1, alpha=1, size=1.0) +
+  theme_classic()+
+  geom_segment(data=mda, aes(x=0, y=0, xend=NMDS1*R*4, yend=NMDS2*R*4), arrow=arrow(length=unit(0.2, "cm"))) +
+  geom_label(data = mda, aes(x=NMDS1*R*4, y=NMDS2*R*4, label=FG, size=10), position = "identity") +
+  scale_color_hue(direction = -1) + scale_fill_hue(direction = -1) + theme(legend.position = "right", legend.title = element_blank(), legend.text = element_text(size = 15),
+                                                                           legend.key = element_rect(fill = "white", colour = "black"))
+
+pqq
+```
+

@@ -1,0 +1,290 @@
+---
+title: "Phyloseq Analysis"
+subtitle: "Supporting code for manuscript:Comprehensive genome analysis of Neisseria meningitidis from South America reveals a distinctive pathogenicity-related prophages repertoire"
+author: "Benjamin Leyton-Carcaman | BIOREN-UFRO | <leyton.bl@gmail.com>"
+date: "01-07-2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### import libraries Phyloseq
+
+```{r message=FALSE, warning=FALSE}
+packages<-c("tidyverse", "vegan", "readxl", "ggplot2", "writexl", "ggsci", "patchwork", "devtools", "phytools")
+bioc_packages <- c("phyloseq", "microbiome", "ape")
+
+.inst <- packages %in% installed.packages()
+if(any(!.inst)) {
+  install.packages(packages[!.inst])
+}
+
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install()
+
+.inst <- bioc_packages %in% installed.packages()
+if(any(!.inst)) {
+  BiocManager::install(bioc_packages[!.inst])
+}
+
+sapply(c(packages, bioc_packages), require, character.only = TRUE)
+
+#library(phytools)
+
+
+#install_github("zdk123/SpiecEasi")
+library(SpiecEasi)
+
+```
+
+### import data
+
+```{r}
+#importar a phyloseq
+
+otu<-read.table("./pseudootu.txt", sep = "\t", header = TRUE, row.names = 1)
+tax<-read.table("./pseudotax.txt", sep = "\t", header = TRUE, row.names = 1)
+sample<-read.table("./pseudosample.txt", sep = "\t", header = TRUE, row.names = 1)
+tree<-read.tree(file = "./tree_midpoit.nwk")
+
+
+otu<-as.matrix(otu)
+tax<-as.matrix(tax)
+OTU = otu_table(otu, taxa_are_rows = TRUE)
+TAX = tax_table(tax)
+SAM = sample_data(sample)
+TREE = phy_tree(tree)
+
+
+phylo_data<-phyloseq(OTU, TAX, SAM, TREE)
+phylo_data
+
+fam<-subset_taxa(phylo_data, Family=="F2")
+fam
+sample_data(phylo_data)
+ord<-ordinate(phylo_data, "NMDS", "jaccard")
+plot_ordination(phylo_data, ord, type="samples", color ="pathogenesis")
+```
+
+
+### Co-ocurrence
+
+```{r}
+
+
+plot_net(phylo_data, type = "samples", point_label = "pathogenesis", point_size = 5, point_alpha = 0.8, maxdist = 0.5, color = "Clonal.complex", distance = "jaccard", laymeth = "auto")
+
+
+se.mb.psd4 <- spiec.easi(phylo_data, method='mb', lambda.min.ratio=1e-2,
+                           nlambda=20, icov.select.params=list(rep.num=50))
+ig2.mb <- adj2igraph(getRefit(se.mb.psd4),  vertex.attr=list(name=taxa_names(phylo_data)))
+plot_network(ig2.mb, phylo_data, type='t', color="Genus", point_size = 7, line_weight = 0.9)
+```
+
+
+### Heatmap
+
+```{r}
+
+### Explorando heatmap
+
+plot_heatmap(phylo_data, distance = "jaccard", low = "white", high = "black", max.label = 2)
+heatmap(otu_table(phylo_data))
+
+
+```
+
+### Alpha-diversity
+
+```{r}
+
+## subsets
+
+phylo2<-subset_samples(phylo_data, pathogenesis=="carrier")
+phylo21<-subset_samples(phylo_data, pathogenesis=="invasive")
+phylo22<-merge_phyloseq(phylo2, phylo21)
+
+
+phylo3<-subset_samples(phylo_data, Clonal.complex==c("ST-11", "L1", "L2", "ST-1136", "ST-198", "ST-254", "ST-32", "ST-41/44", "ST-53"))
+phylo31<-subset_samples(phylo_data, Clonal.complex=="ST-11")
+phylo32<-subset_samples(phylo_data, Clonal.complex=="L1")
+phylo33<-subset_samples(phylo_data, Clonal.complex=="L2")                        
+phylo34<-subset_samples(phylo_data, Clonal.complex=="ST-1136")
+phylo35<-subset_samples(phylo_data, Clonal.complex=="ST-198")
+phylo36<-subset_samples(phylo_data, Clonal.complex=="ST-254")
+phylo37<-subset_samples(phylo_data, Clonal.complex=="ST-32")
+phylo38<-subset_samples(phylo_data, Clonal.complex=="ST-41/44")
+phylo39<-subset_samples(phylo_data, Clonal.complex=="ST-53")
+phylo310<-merge_phyloseq(phylo31, phylo32, phylo33, phylo34, phylo35, phylo36,phylo37, phylo38, phylo39)
+
+
+##plots pathogenesis
+
+shannon<-plot_richness(phylo22, color = "pathogenesis", x= "pathogenesis", measures = "Shannon") + geom_boxplot(aes(fill = pathogenesis), alpha=.7) +
+  scale_color_uchicago() + scale_fill_uchicago() + theme_bw()
+
+
+chao1<-plot_richness(phylo22, color = "pathogenesis", x= "pathogenesis", measures = "Chao1") + geom_boxplot(aes(fill = pathogenesis), alpha=.7) +
+  scale_color_uchicago() + scale_fill_uchicago() + theme_bw()
+
+
+
+wilcox.test(shannon$data$value~shannon$data$pathogenesis, data=shannon$data)
+wilcox.test(chao1$data$value~chao1$data$pathogenesis, data=chao1$data)
+```
+
+
+```{r}
+## explorando trees
+
+phylo2<-subset_samples(phylo_data, pathogenesis=="carrier")
+phylo21<-subset_samples(phylo_data, pathogenesis=="invasive")
+phylo22<-merge_phyloseq(phylo2, phylo21)
+
+plot_tree(phylo22, ladderize="left", color="pathogenesis", label.tips="taxa_names") + scale_color_hue(direction = -1) + scale_fill_hue(direction = -1)-> tree_patho
+
+phylo3<-subset_samples(phylo_data, Clonal.complex==c("ST-11", "L1", "L2", "ST-1136", "ST-198", "ST-254", "ST-32", "ST-41/44", "ST-53"))
+phylo31<-subset_samples(phylo_data, Clonal.complex=="ST-11")
+phylo32<-subset_samples(phylo_data, Clonal.complex=="L1")
+phylo33<-subset_samples(phylo_data, Clonal.complex=="L2")                        
+phylo34<-subset_samples(phylo_data, Clonal.complex=="ST-1136")
+phylo35<-subset_samples(phylo_data, Clonal.complex=="ST-198")
+phylo36<-subset_samples(phylo_data, Clonal.complex=="ST-254")
+phylo37<-subset_samples(phylo_data, Clonal.complex=="ST-32")
+phylo38<-subset_samples(phylo_data, Clonal.complex=="ST-41/44")
+phylo39<-subset_samples(phylo_data, Clonal.complex=="ST-53")
+phylo310<-merge_phyloseq(phylo31, phylo32, phylo33, phylo34, phylo35, phylo36,phylo37, phylo38, phylo39)
+
+colores_st<-c("#38761d","#e3359b","#ea9999", "#f1c232","#45818e", "#274e13", "#b4a7d6", "#f6b26b", "#a2c4c9")
+
+#Graficos finales.
+
+
+plot_tree(phylo310, ladderize="left", color="Clonal.complex", label.tips="taxa_names") + theme(legend.position = "bottom", legend.title = element_blank(), legend.text = element_text(size = 10), legend.key = element_rect(fill = "white", colour = "black")) + scale_color_manual(values = colores_st)->tree_st
+
+
+
+
+tree_st
+
+```
+
+```{r}
+library(btools)
+library(xtable)
+alpha_phylo<-estimate_pd(phylo_data)
+data_index<-cbind(sample_data(phylo_data), alpha_phylo)
+phylo_data.anova<-aov(PD~pathogenesis, data_index)
+phylo_data.kw<-kruskal.test(PD~pathogenesis, data_index)
+summary(phylo_data.anova)
+phylo_data.kw
+
+pairwise.wilcox.test(x = data_index$PD, g = data_index$pathogenesis, p.adjust.method = "holm" )
+```
+
+
+```{r}
+library(microbiome)
+library(knitr)
+library(ggpubr)
+library(ggsci)
+
+#########################################################
+tab_dominance <- dominance(phylo22, index = "all") # extract gini idex
+tab_riqueza<-richness(phylo22) #extrac chao1
+tab_diversity<-diversity(phylo22)  #extrac Shannon
+########################################################
+
+# Generamos un objeto `phyloseq` sin taxa que sume 0 reads
+phylo_data.2 <- prune_taxa(taxa_sums(phylo22) > 0, phylo22)
+phylo_data.2.meta <- meta(phylo_data.2)
+
+phylo_data.2.meta$gini <- tab_dominance$gini
+phylo_data.2.meta$Chao1<-tab_riqueza$chao1
+phylo_data.2.meta$Shannon<-tab_diversity$shannon
+
+# Obtenemos las variables desde nuestro objeto `phyloseq`
+phylo_data.2.meta$pathogenesis<-as.factor(phylo_data.2.meta$pathogenesis)
+spps <- levels(phylo_data.2.meta$pathogenesis)
+# Creamos una lista de lo que queremos comparar
+pares.spps <- combn(seq_along(spps), 2, simplify = FALSE, FUN = function(i)spps[i])
+# Imprimimos en pantalla el resultado
+print(pares.spps)
+
+p20<-phylo_data.2.meta %>%
+  ggplot(aes(x=pathogenesis, y=Chao1, fill=pathogenesis)) + geom_boxplot() +
+  stat_compare_means(comparisons = pares.spps) + scale_fill_uchicago() +
+  theme_bw() + geom_jitter(aes(color=pathogenesis)) + scale_color_uchicago() + ylab("Chao1 Index") + xlab("pathogenesis") + theme(legend.position = "none")
+
+p20  
+
+
+p3<-phylo_data.2.meta %>%
+  ggplot(aes(x=pathogenesis, y=Shannon, fill=pathogenesis)) + geom_boxplot() +
+  stat_compare_means(comparisons = pares.spps) + scale_fill_uchicago() +
+  theme_bw() + geom_jitter(aes(color=pathogenesis)) + scale_color_uchicago() + ylab("Shannon Index") + xlab("pathogenesis") + theme(legend.position = "none")
+
+p3 
+
+
+p4<-phylo_data.2.meta %>%
+  ggplot(aes(x=pathogenesis, y=gini, fill=pathogenesis)) + geom_boxplot() +
+  stat_compare_means(comparisons = pares.spps) + scale_fill_uchicago() +
+  theme_bw() + geom_jitter(aes(color=pathogenesis)) + scale_color_uchicago() + ylab("Gini Index") + xlab("pathogenesis") + theme(legend.position = "none")
+
+p4 
+
+
+gridExtra::grid.arrange(p20,p3,p4, ncol = 3, nrow=1)
+```
+
+```{r}
+#########################################################
+tab_dominance <- dominance(phylo310, index = "all") # extract gini idex
+tab_riqueza<-richness(phylo310) #extrac chao1
+tab_diversity<-diversity(phylo310)  #extrac Shannon
+########################################################
+
+# Generamos un objeto `phyloseq` sin taxa que sume 0 reads
+phylo_data.3 <- prune_taxa(taxa_sums(phylo310) > 0, phylo310)
+phylo_data.3.meta <- meta(phylo_data.3)
+
+phylo_data.3.meta$gini <- tab_dominance$gini
+phylo_data.3.meta$Chao1<-tab_riqueza$chao1
+phylo_data.3.meta$Shannon<-tab_diversity$shannon
+
+# Obtenemos las variables desde nuestro objeto `phyloseq`
+phylo_data.3.meta$Clonal.complex<-as.factor(phylo_data.3.meta$Clonal.complex)
+spps <- levels(phylo_data.3.meta$Clonal.complex)
+# Creamos una lista de lo que queremos comparar
+pares.spps <- combn(seq_along(spps), 2, simplify = FALSE, FUN = function(i)spps[i])
+# Imprimimos en pantalla el resultado
+print(pares.spps)
+
+p21<-phylo_data.3.meta %>%
+  ggplot(aes(x=Clonal.complex, y=Chao1, fill=Clonal.complex)) + geom_boxplot() + scale_fill_uchicago() +
+  theme_bw() + geom_jitter(aes(color=Clonal.complex)) + scale_color_uchicago() + ylab("Chao1 Index") + xlab("Clonal complex") + theme(legend.position = "none")
+
+p21  
+
+
+p3x<-phylo_data.3.meta %>%
+  ggplot(aes(x=Clonal.complex, y=Shannon, fill=Clonal.complex)) + geom_boxplot() + scale_fill_uchicago() +
+  theme_bw() + geom_jitter(aes(color=Clonal.complex)) + scale_color_uchicago() + ylab("Shannon Index") + xlab("Clonal complex") + theme(legend.position = "none")
+
+p3x
+
+
+p4x<-phylo_data.3.meta %>%
+  ggplot(aes(x=Clonal.complex, y=gini, fill=Clonal.complex)) + geom_boxplot() + scale_fill_uchicago() +
+  theme_bw() + geom_jitter(aes(color=Clonal.complex)) + scale_color_uchicago() + ylab("Gini Index") + xlab("Clonal complex") + theme(legend.position = "none")
+
+p4x 
+
+
+gridExtra::grid.arrange(p21,p3x,p4x, ncol = 3, nrow=1)
+```
+
