@@ -31,9 +31,16 @@ An analysis with [CD-HIT](https://github.com/weizhongli/cdhit/) was carried out 
 cd-hit-est -i 157.fasta -c 0.75 -n 4 -M 13000 -T 0 -o 157clustered075.fasta
 ```
 
-## Data analysis and vizualization
+## Data analysis and vizualization.
 
-We provide detailed R code for each analysis [here](https://github.com/Leytoncito/PhagesNM/tree/main/R%20analysis).
+We generated a presence-absence matrix with [LS_BSR](https://github.com/jasonsahl/LS-BSR) using the prophage sequences available [here](https://github.com/Leytoncito/PhagesNM/tree/main/Supplementary_Data/Secuences_of_NmSA_phages/sequences_fastas) in the Neisseria miningitidis genomes used in this study.
+To run LS_BSR we use this command line:
+
+```
+comando LS_BSR, buscarlo.....
+```
+
+With this data matrix, we explore the results according to the available metadata of the analyzed genomes. We provide detailed R code for each analysis [here](https://github.com/Leytoncito/PhagesNM/tree/main/R%20analysis).
 
 ## Network Analysis
 
