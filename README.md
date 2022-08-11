@@ -42,4 +42,7 @@ The line of code to run the analysis was the following:
 
 ```
 vcontact2 --raw-proteins fig4_julio_12_2022.faa --rel-mode 'Diamond' --proteins-fp gene_to_genome.csv --db 'None' --pcs-mode MCL --vcs-mode ClusterONE --c1-bin ~/softwares/cluster_one-1.0.jar --output-dir ./vcontact_2/ --threads 32
+
 ```
+The protein exchange network was visually inspected and ordered with Cytoscape, using the Edge-weighted Spring-Embedded Layout algorithm.
+We make the phage sequences available in .faa format to facilitate comparison of these phages with future studies [here](https://github.com/Leytoncito/PhagesNM/tree/main/Supplementary_Data/Secuences_of_NmSA_phages/sequences_faa).
