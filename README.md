@@ -2,12 +2,11 @@
 
 ## Bioinformatics analysis.
 
-### Phylogenetic and pangenome analysis:
+#### Phylogenetic and pangenome analysis:
 The core-genome alignment obtained by [Harvest suite tool](https://harvest.readthedocs.io/en/latest/)
 
 ```
 Comandos parsnp y ggr
-
 ```
 
 The Phylogenetic analysis of the 157 genomes was carried out using the Randomized Axelerated Maximum Likelihood [(RAxML)](https://cme.h-its.org/exelixis/web/software/raxml/) software. The line of code used was the following:
@@ -15,7 +14,7 @@ The Phylogenetic analysis of the 157 genomes was carried out using the Randomize
 ./raxml-ng --msa all_genomes_nm --threads 8 --all --bs-trees 100 --model GTR+G+FO
 ```
 
-### Identification and annotation of phages:
+#### Identification and annotation of phages:
 
 For the identification and annotation of phages VIBRANT was the software used
 The line of code to run the analysis was the following:
@@ -24,7 +23,7 @@ for file in *.fas; do
   VIBRANT_run.py -d /home/david/VIBRANT/databases/ -folder /home/david/VIBRANT/outputfolderNM/ -t 10 -i $file; 
 done
 ```
-### Reduction of phage redundancy
+#### Reduction of phage redundancy
 
 An analysis with [CD-HIT](https://github.com/weizhongli/cdhit/) was carried out in order to decrease phage redundancy. The line of code for the analysis was the following
 ```
@@ -49,7 +48,6 @@ The line of code to run the analysis was the following:
 
 ```
 vcontact2 --raw-proteins fig4_julio_12_2022.faa --rel-mode 'Diamond' --proteins-fp gene_to_genome.csv --db 'None' --pcs-mode MCL --vcs-mode ClusterONE --c1-bin ~/softwares/cluster_one-1.0.jar --output-dir ./vcontact_2/ --threads 32
-
 ```
 The protein exchange network was visually inspected and ordered with Cytoscape, using the Edge-weighted Spring-Embedded Layout algorithm.
 We make the phage sequences available in .faa format to facilitate comparison of these phages with future studies [here](https://github.com/Leytoncito/PhagesNM/tree/main/Supplementary_Data/Secuences_of_NmSA_phages/sequences_faa).
