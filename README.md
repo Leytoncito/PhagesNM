@@ -1,4 +1,4 @@
-# Supporting code for manuscript: Genomic identification and characterization of Neisseria meningitidis prophages from South America
+# Supporting code for manuscript: Comprehensive genome analysis of Neisseria meningitidis from South America reveals a distinctive pathogenicity-related prophages repertoire
 
 ## Bioinformatics analysis.
 
