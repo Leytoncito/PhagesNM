@@ -6,7 +6,7 @@
 The core-genome alignment obtained by [Harvest suite tool](https://harvest.readthedocs.io/en/latest/)
 
 ```
-Comandos parsnp y ggr
+parsnp -r ! -d genomes_Nm/ -o results_parsnp -c -p 12
 ```
 
 The Phylogenetic analysis of the 157 genomes was carried out using the Randomized Axelerated Maximum Likelihood [(RAxML)](https://cme.h-its.org/exelixis/web/software/raxml/) software. The line of code used was the following:
@@ -36,9 +36,12 @@ We generated a presence-absence matrix with [LS_BSR](https://github.com/jasonsah
 To run LS_BSR we use this command line:
 
 ```
-comando LS_BSR, buscarlo.....
+python /path/ls_bsr.py -d genomes_Nm -g phages_non_redudant.fasta -b blastn –x ls_bsr_results
 ```
 
+```
+python /path/BSR_to_PANGP.py –b  ls_bsr_results/$prefix_bsr_matrix.txt -l 0.4
+```
 With this data matrix, we explore the results according to the available metadata of the analyzed genomes. We provide detailed R code for each analysis [here](https://github.com/Leytoncito/PhagesNM/tree/main/R%20analysis).
 
 ## Network Analysis
