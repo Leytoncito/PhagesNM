@@ -1,4 +1,10 @@
-# Supporting code for manuscript: Comprehensive genome analysis of Neisseria meningitidis from South America reveals a distinctive pathogenicity-related prophages repertoire
+# Supporting code for manuscript: Comprehensive Genome Analysis of Neisseria meningitidis from South America Reveals a Distinctive Pathogenicity-Related Prophage  Repertoire
+
+
+
+If you find this code useful please consider citing our manuscript in IJMS: <br/>
+Madariaga-Troncoso, D.; Leyton-Carcaman, B.; Garcia, M.; Kawai, M.; Abanto-Marin, M. Comprehensive Genome Analysis of Neisseria meningitidis from South America Reveals a Distinctive Pathogenicity-Related Prophage Repertoire. Int. J. Mol. Sci. 2022, 23, x. https://doi.org/10.3390/xxxxx
+
 
 ## Bioinformatics analysis.
 
