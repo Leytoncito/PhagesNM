@@ -3,7 +3,7 @@
 
 
 If you find this code useful please consider citing our manuscript in IJMS: <br/>
-Madariaga-Troncoso, D.; Leyton-Carcaman, B.; Garcia, M.; Kawai, M.; Abanto-Marin, M. Comprehensive Genome Analysis of Neisseria meningitidis from South America Reveals a Distinctive Pathogenicity-Related Prophage Repertoire. Int. J. Mol. Sci. 2022, 23, x. https://doi.org/10.3390/xxxxx
+Madariaga-Troncoso, D.; Leyton-Carcaman, B.; Garcia, M.; Kawai, M.; Abanto-Marin, M. Comprehensive Genome Analysis of Neisseria meningitidis from South America Reveals a Distinctive Pathogenicity-Related Prophage Repertoire. Int. J. Mol. Sci. 2022, 23, x. [https://doi.org/10.3390/ijms232415731]
 
 
 ## Bioinformatics analysis.
